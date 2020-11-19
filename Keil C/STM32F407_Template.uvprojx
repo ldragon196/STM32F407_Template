@@ -414,6 +414,16 @@
           <GroupName>hard</GroupName>
           <Files>
             <File>
+              <FileName>event.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Source\hard\event\event.c</FilePath>
+            </File>
+            <File>
+              <FileName>event.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\hard\event\event.h</FilePath>
+            </File>
+            <File>
               <FileName>gpio.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Source\hard\gpio\gpio.c</FilePath>
@@ -427,6 +437,13 @@
         </Group>
         <Group>
           <GroupName>utility</GroupName>
+          <Files>
+            <File>
+              <FileName>utility.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Source\utility\utility.h</FilePath>
+            </File>
+          </Files>
         </Group>
         <Group>
           <GroupName>board</GroupName>

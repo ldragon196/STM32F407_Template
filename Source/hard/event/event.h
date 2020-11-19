@@ -1,14 +1,14 @@
 /*
- * led.h
+ * gpio.h
  *
- *  Created on: November 18, 2020
+ *  Created on: November 19, 2020
  *      Author: LongHD
  */
  
 /******************************************************************************/
 
-#ifndef _SOURCE_MID_LED_LED_H_
-#define _SOURCE_MID_LED_LED_H_
+#ifndef _SOURCE_HARD_EVENT_EVENT_H_
+#define _SOURCE_HARD_EVENT_EVENT_H_
 
 /******************************************************************************/
 /*                              INCLUDE FILES                                 */
@@ -20,27 +20,29 @@
 /*                     EXPORTED TYPES and DEFINITIONS                         */
 /******************************************************************************/
 
-typedef uint16_t LedMask;
-enum {
-	LED_OFF = 0,
-	LED_GREEN = 1,
-	LED_RED = 2,
-	LED_ALL = 0xFFFF,
+typedef void (*EventFunction)(void);       // Event fired callback
+typedef uint8_t EventControl;              // Event identify
+
+/* Event status */
+typedef uint8_t EventStatus;
+enum{
+    EVENT_INACTIVE = 0x00,
+    EVENT_ACTIVE = 0x01,
 };
 
-typedef struct {
-	LedMask ledBlink;            // Led blink
-	LedMask ledStable;           // Led after blink is completed
-	uint16_t blinkTimes;         // Blink times
-	uint16_t periods;            // Blink periods
-} LedControl_t;
+typedef struct{
+    EventStatus status;                    // Event status
+    uint32_t timeStart;                    // Time start active event
+    uint32_t timeExcute;                   // Active event after timeExcute (ms)
+    EventFunction eventHandler;            // Callback function is invoked when timeout
+} EventParam_t;
 
 
-#define TIMES_BLINK_FOREVER                  200
 
-#define TIME_LED_BLINK_FAST                  100
-#define TIME_LED_BLINK_MEDIUM                300
-#define TIME_LED_BLINK_SLOW                  500
+
+#define CURRENT_TIME_MS()                  HAL_GetTick()           
+#define TIME_ELAPSED_MS(start)             ((CURRENT_TIME_MS() - (start)) & MAX_UINT32_T)
+
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
@@ -58,11 +60,15 @@ typedef struct {
 /*                                FUNCTIONS                                   */
 /******************************************************************************/
 
-void LED_Init(void);
-void LED_Control(LedMask mask);
-void LED_Toggle(LedMask mask);
-void LED_Blink(LedMask ledBlink, uint32_t timeDelay, uint8_t timesBlink, LedMask ledStatble);
+void EVENT_Init(void);
+void EVENT_Creat(EventControl *eventId, EventFunction callbackFunc);
+void EVENT_Task(void);
+
+void EVENT_SetActive(EventControl eventId);
+void EVENT_SetInactive(EventControl eventId);
+void EVENT_SetDelayMS(EventControl eventId, uint32_t delay);
+uint32_t EVENT_GetTimeRemain(EventControl eventId);
 
 /******************************************************************************/
 
-#endif /* _SOURCE_MID_LED_LED_H_ */
+#endif /* _SOURCE_HARD_EVENT_EVENT_H_ */

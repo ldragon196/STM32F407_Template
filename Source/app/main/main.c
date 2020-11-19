@@ -13,7 +13,7 @@
 /******************************************************************************/
 
 #include "config.h"
-
+#include "hard/event/event.h"
 #include "mid/led/led.h"
 
 /******************************************************************************/
@@ -55,6 +55,10 @@ static void MAIN_Init(void){
 	/* Reset of all peripherals, Initializes the Flash interface and the Systick. */
 	HAL_Init();
 	
+	/* Hard initializations */
+	EVENT_Init();
+	
+	/* Mid initializations */
 	LED_Init();
 }
 
@@ -68,12 +72,10 @@ int main(void){
 	/* Initialization */
 	MAIN_Init();
 	
+	LED_Blink(LED_ALL, TIME_LED_BLINK_MEDIUM, 3, LED_GREEN);
 	/* Main loop */
 	while(1){
-		LED_Control(LED_OFF);
-		HAL_Delay(1000);
-		LED_Control(LED_RED);
-		HAL_Delay(1000);
+		EVENT_Task();
 	}
 }
 

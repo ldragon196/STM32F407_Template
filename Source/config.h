@@ -45,6 +45,9 @@
 #define LED_GPIO_CLK_ENABLE()                   __HAL_RCC_GPIOD_CLK_ENABLE()
 
 
+/* EVENT */
+#define EVENT_MAX_CONTROL                       8
+
 
 /******************************************************************************/
 /*                              PRIVATE DATA                                  */
